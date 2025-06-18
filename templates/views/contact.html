@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact Us</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .contact-section {
+      background: white;
+      padding: 60px 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  {% include 'layout/navbar.html' %}
+
+  <!-- Contact Section -->
+  <div class="container"  style="margin:60px auto">
+    <div class="contact-section row">
+      <!-- Contact Info -->
+      <div class="col-12 col-md-5 mb-4 mb-md-0">
+        <h2>Contact Us</h2>
+        <p>If you have any questions, feel free to reach out to us.</p>
+        <ul class="list-unstyled">
+          <li><strong>Email:</strong> mengsonly@myshop.com</li>
+          <li><strong>Phone:</strong> +855 10 94 77 90</li>
+          <li><strong>Address:</strong> Street 123, Phnom Penh, Cambodia</li>
+        </ul>
+        <p>We're available Monday to Saturday, 8AM – 6PM.</p>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="col-12 col-md-7">
+        <form>
+          <div class="mb-3">
+            <label for="name" class="form-label">Your Name</label>
+            <input type="text" class="form-control" id="name" required />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Your Email</label>
+            <input type="email" class="form-control" id="email" required />
+          </div>
+          <div class="mb-3">
+            <label for="message" class="form-label">Your Message</label>
+            <textarea class="form-control" id="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {#  footer  #}
+    {% include 'layout/footer.html' %}
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

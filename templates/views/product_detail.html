@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product Detail</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .product-image {
+      max-width: 100%;
+      max-height: 400px;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  {% include 'layout/navbar.html' %}
+
+
+  <!-- Product Detail Section -->
+  <div class="container " style="margin: 100px auto">
+    <div class="row">
+        <div class="col-md-6 text-center">
+          <img src="{{ product['image'] }}" alt="{{ product['image'] }}" class="product-image">
+        </div>
+        <div class="col-md-6">
+          <h2 class="title"> {{ product['title'] }} </h2>
+          <p class="text-muted"> {{ product['category'] }} </p>
+          <h4 class="text-success price">${{ product['price'] }}</h4>
+          <div class="mb-2">
+            <span class="badge bg-warning text-dark">★ {{ product['rating']['rate'] }} </span>
+            <small class="text-muted">({{ product['rating']['count'] }} reviews)</small>
+          </div>
+          <p>{{ product['description'] }}</p>
+          <a href="/product" class="btn btn-outline-secondary">← Back to Home</a>
+            <button type="button" class="btn btn-primary addToCart" onclick="addToCarT(this)">Add to Cart</button>
+        </div>
+      </div>
+  </div>
+
+  <!-- Footer -->
+  {% include 'layout/footer.html' %}
+
+  <script>
+   function addToCarT(btn){
+       let cart_list = localStorage.getItem('cart_list') ?? [];
+        cart_list = JSON.parse(cart_list);
+
+        let card = btn.parentElement.parentElement;
+
+        let title = card.querySelector('.title').innerText.trim();
+        let price = card.querySelector('.price').innerText.trim();
+        let image = card.querySelector('.product-image').src;
+
+        console.log(title)
+        console.log(price)
+        console.log(image)
+
+        let find_product = cart_list.find(obj => {return obj.title === title;})
+
+        price = parseFloat(price.replace('$',''));
+
+        if(find_product === undefined) {
+            cart_list.push(
+                {
+                    title : title ,
+                    quantity : 1,
+                    price : price,
+                    image : image
+                })
+        }
+        else {
+            find_product.quantity++;
+        }
+
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Your product has been saved",
+          showConfirmButton: false,
+          timer: 1000
+        });
+
+        localStorage.setItem('cart_list',JSON.stringify(cart_list));
+        updateCart();
+    }
+
+  </script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
