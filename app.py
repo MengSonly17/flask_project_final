@@ -1,5 +1,4 @@
 from urllib.parse import quote_plus
-
 from Tools.scripts.make_ctype import method
 from flask import Flask , render_template , request
 import requests
