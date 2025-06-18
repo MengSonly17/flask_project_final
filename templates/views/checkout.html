@@ -81,17 +81,17 @@
                 </div>
                 <div class="mb-3 col">
                     <label for="email" class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="email"  autocomplete="on"  placeholder="example@gmail.com" />
+                    <input type="email" class="form-control" id="email"  autocomplete="on"  placeholder="example@gmail.com" required/>
                 </div>
             </div>
               <h5 class="mt-3">2. Delivery Method</h5>
               <div class="d-flex my-4">
                   <div class="form-check p-0">
-                    <input class="form-check-input" type="radio" name="delivery" id="store" value="store" checked>
+                    <input class="form-check-input" type="radio" name="delivery" id="store" value="store" checked >
                     <label class="form-check-icon" for="store"><i class="fa-solid fa-store me-1"></i>Store</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="delivery" id="delivery" value="delivery">
+                    <input class="form-check-input" type="radio" name="delivery" id="delivery" value="delivery" >
                     <label class="form-check-icon" for="delivery"><i class="fa-solid fa-truck me-1"></i>Delivery</label>
                   </div>
               </div>
@@ -103,23 +103,23 @@
 
               <div class="d-flex my-4">
                   <div class="form-check p-0">
-                    <input class="form-check-input" type="radio" name="payment" id="ac" value="ac" checked>
+                    <input class="form-check-input" type="radio" name="payment" id="ac" value="ac" checked required>
                     <label class="form-check-icon" for="ac">AC</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="payment" id="aba" value="aba">
+                    <input class="form-check-input" type="radio" name="payment" id="aba" value="aba" >
                     <label class="form-check-icon" for="aba">ABA</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="payment" id="wing" value="wing">
+                    <input class="form-check-input" type="radio" name="payment" id="wing" value="wing" >
                     <label class="form-check-icon" for="wing">WING</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="payment" id="others" value="others">
+                    <input class="form-check-input" type="radio" name="payment" id="others" value="others" >
                     <label class="form-check-icon" for="others">OTHERS</label>
                   </div>
               </div>
-            <button type="button" class="btn btn-success w-100" onclick="sendOrder()">Place Order</button>
+            <button type="submit" id="btnSubmit" class="btn btn-success w-100" {# onclick="sendOrder()" #}>Place Order</button>
           </form>
         </div>
 
@@ -146,8 +146,46 @@
     <!-- Scripts -->
     <script>
 
-        function sendOrder(){
+        let cart_listed = localStorage.getItem('cart_list') ?? [];
+        cart_listed = JSON.parse(cart_listed);
 
+        document.getElementById('checkoutForm').addEventListener('submit',function (e) {
+            e.preventDefault();
+
+            if (this.checkValidity()) {
+                // ✅ Form is valid — now call your sendOrder logic
+                sendOrder();
+                let timerInterval;
+                Swal.fire({
+                  title: "Send Invoice to Telegram!",
+                  html: "I will close in <b></b> milliseconds.",
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                      timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 100);
+                  },
+                  willClose: () => {
+                    clearInterval(timerInterval);
+                  }
+                }).then((result) => {
+                  /* Read more about handling dismissals below */
+                  if (result.dismiss === Swal.DismissReason.timer) {
+                    console.log("I was closed by the timer");
+                  }
+                });
+                localStorage.removeItem('cart_list');
+                window.location.href = '/product';
+            }else {
+                // ❌ Form is invalid — this will show default HTML5 validation UI
+                this.reportValidity();
+            }
+        });
+
+        function sendOrder(){
             const firstName = document.getElementById('firstname').value;
             const lastName = document.getElementById('lastname').value;
             const email = document.getElementById('email').value;
@@ -156,11 +194,34 @@
             const address = document.getElementById('address').value;
             const totalAmount = document.getElementById('totalPrice').innerText;
 
-            console.log(firstName, lastName , email, number , address, telegramNumber,totalAmount);
+            let deliveryMethod = document.getElementById('store').checked === true ? "store"
+                                : "Delivery";
+
+            let payMethod = document.getElementById('aba').checked === true ? "ABC"
+                       : document.getElementById('wing').checked === true ? "WING"
+                       : document.getElementById('ac').checked === true ? "AC"
+                       :  "Others";
+
+            console.log(deliveryMethod)
+
 
             let cart_list = localStorage.getItem('cart_list') ?? [];
             cart_list = JSON.parse(cart_list);
 
+            let fullName = firstName + ' ' + lastName;
+            let obj = {
+                fullName : fullName,
+                email : email,
+                number : number,
+                telegramNumber : telegramNumber,
+                address : address,
+                totalAmount : totalAmount,
+                deliveryMethod : deliveryMethod,
+                payMethod : payMethod
+            }
+
+            {# add checkout information  to cart list #}
+            cart_list.push(obj);
 
             {# send data from javascript to python script #}
             $.ajax({
@@ -175,11 +236,9 @@
                     console.error("Error:", error);
                 }
             });
+
+            {#localStorage.removeItem('cart_list');#}
         }
-    </script>
-    <script>
-        let cart_listed = localStorage.getItem('cart_list') ?? [];
-        cart_listed = JSON.parse(cart_listed);
 
         let tr = '';
         let total =0;
