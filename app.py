@@ -1,3 +1,4 @@
+from logging import debug
 from urllib.parse import quote_plus
 from Tools.scripts.make_ctype import method
 from flask import Flask , render_template , request
@@ -105,7 +106,7 @@ def messageToTelegram():
         f"<strong>{'💵 Change':<5} : {'':<2} </strong>{format_currency(float(data[size - 1]['payment'])-float(data[size-1]['totalAmount']), 'USD', locale='en_US')}\n"
     )
 
-    time.sleep(3)
+    time.sleep(2)
     html = message
     url = f"https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&text={quote_plus(html)}&parse_mode=html"
     r = requests.get(url)
@@ -114,4 +115,4 @@ def messageToTelegram():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.',debug=True)

@@ -35,7 +35,7 @@
             <small class="text-muted">({{ product['rating']['count'] }} reviews)</small>
           </div>
           <p>{{ product['description'] }}</p>
-          <a href="/product" class="btn btn-outline-secondary me-2">← Back to Home</a>
+          <a href="/product" class="btn btn-outline-secondary me-2">← Back to Products</a>
             <button type="button" class="btn btn-success addToCart" onclick="addToCarT(this)">Add to Cart</button>
         </div>
       </div>
@@ -46,7 +46,7 @@
 
   <script>
    function addToCarT(btn){
-       let cart_list = localStorage.getItem('cart_list') ?? [];
+       let cart_list = localStorage.getItem('cart_list') ?? '[]';
         cart_list = JSON.parse(cart_list);
 
         let card = btn.parentElement.parentElement;

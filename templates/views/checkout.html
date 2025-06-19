@@ -161,37 +161,23 @@
                     // ✅ Form is valid — now call your sendOrder logic
                     sendOrder(amount);
 
-                    let timerInterval;
                     Swal.fire({
-                      title: "Send Invoice to Telegram!",
-                      html: "I will close in <b></b> milliseconds.",
-                      timer: 2000,
-                      timerProgressBar: true,
-                      didOpen: () => {
-                        Swal.showLoading();
-                        const timer = Swal.getPopup().querySelector("b");
-                        timerInterval = setInterval(() => {
-                          timer.textContent = `${Swal.getTimerLeft()}`;
-                        }, 200);
-                      },
-                      willClose: () => {
-                        clearInterval(timerInterval);
-                      }
-                    }).then((result) => {
-                      /* Read more about handling dismissals below */
-                      if (result.dismiss === Swal.DismissReason.timer) {
-                        console.log("I was closed by the timer");
-                      }
+                      position: "center",
+                      icon: "success",
+                      title: "Your order has been successfully.",
+                      showConfirmButton: false,
+                      timer: 5000
                     });
 
-                    {#localStorage.removeItem('cart_list');#}
-                    {#window.location.href = '/product';#}
+                    localStorage.removeItem('cart_list');
+                    window.location.href = '/product';
+
                 }else {
                     // ❌ Form is invalid — this will show default HTML5 validation UI
                     this.reportValidity();
                 }
-                console.log(amount)
-                console.log(totalAmount)
+
+
             }else {
                 Swal.fire({
                   icon: "error",
@@ -252,8 +238,6 @@
                     console.error("Error:", error);
                 }
             });
-
-            {#localStorage.removeItem('cart_list');#}
         }
 
         let tr = '';
