@@ -137,7 +137,7 @@
 
     {% include 'layout/navbar.html' %}
 
-    <div class="container mt-5" id="hasNoProduct">
+    <div class="container mt-4 mt-md-4 mt-lg-5" id="hasNoProduct">
         <div class="card p-4 shadow-sm">
             <h5 class="card-title mb-4">
                 🧾 Order Summary
@@ -146,17 +146,17 @@
             <p class="text-muted mb-4">Your cart is empty.</p>
         </div>
          <div>
-             <a href="/product" class="btn btn-primary mt-3">Return to Shop</a>
+             <a href="/product" class="btn btn-primary mt-3 mt-md-4 mt-lg-4">Return to Shop</a>
          </div>
     </div>
     <div class="container" id="hasProduct" style="margin:150px auto;">
         <div class="row">
-            <div class="col-lg-7">
+            <div class="p-2 col-sm-12 col-md-12 pb-md-2 col-lg-7 p-lg-0 px-lg-3">
                 {# render row #}
             </div>
 
-            <div class="col-lg-5">
-                <div class="order-summary">
+            <div class="p-2 col-sm-12 col-md-12 pt-md-3 col-lg-5 p-lg-0 px-lg-3">
+                <div class="order-summary ">
                     <h3>Order Summary</h3>
                     <div class="summary-item">
                         <span class="label">Subtotal</span>

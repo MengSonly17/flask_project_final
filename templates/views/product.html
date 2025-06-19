@@ -35,15 +35,10 @@
         <div class="row">
 
             {% for item in products %}
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card product-card p-3 mb-4">
-                      <img
-                              src="{{ item['image'] }}"
-                              style="height:250px;width: 100%"
-                              class="card-img-top product-image mt-3 mb-4"
-                              alt="{{ item['image'] }}"
-                      />
-                      <div class="card-body">
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="card product-card mx-2 my-2 mb-md-4 mt-md-2 mb-lg-4 mt-lg-1 m-md-0 m-lg-0 px-3 py-2">
+                      <img src="{{ item['image'] }}" style="height:250px;width: 100%;" class="card-img-top product-image mt-3 mb-4" alt="{{ item['image'] }}"/>
+                      <div class="card-body p-4 p-md-4 p-lg-4">
                         <h5 class="card-title title">
                             {{ item['title'] }}
                         </h5>
