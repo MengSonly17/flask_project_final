@@ -91,6 +91,7 @@ def messageToTelegram():
     table = tabulate(cart_list, ["Item", "Qty", "Price"], tablefmt="fancy_outline")
     user_name = getpass.getuser()
     message = (
+        f"<strong>🛍 Checkout Summary </strong>\n"
         f"<strong>Date </strong> {'':>42} : {'':<2} {date.today()}\n"
         f"<strong>Customer Name</strong> {'':>19} : {'':<2} {data[size-1]['fullName']}\n"
         f"<strong>Number  </strong> {'':>34} : {'':<2} {data[size-1]['number']}\n"
@@ -101,12 +102,12 @@ def messageToTelegram():
         f"<strong>Address  </strong> {'':>34} : {'':<2} {data[size-1]['address']}\n"
         f"<strong>Sold by </strong> {'':>37} : {'':<2} {user_name}\n\n"
         f"<pre>{table}</pre>"
-        f"\n\n<strong>{'Total':<54} : {'':<2} </strong>{format_currency(data[size-1]['totalAmount'], 'USD', locale='en_US')}\n"
-        f"<strong>{'Receive':<50} : {'':<2} </strong>{format_currency(data[size - 1]['totalAmount'], 'USD', locale='en_US')}\n"
-        f"<strong>{'Receive':<50} : {'':<2} </strong>{format_currency(0, 'USD', locale='en_US')}\n"
+        f"\n\n<strong>{'🧾Total':<54} : {'':<2} </strong>{format_currency(data[size-1]['totalAmount'], 'USD', locale='en_US')}\n"
+        f"<strong>{'✅Receive':<50} : {'':<2} </strong>{format_currency(data[size - 1]['totalAmount'], 'USD', locale='en_US')}\n"
+        f"<strong>{'💰Change':<50} : {'':<2} </strong>{format_currency(0, 'USD', locale='en_US')}\n"
     )
 
-    time.sleep(3)
+    time.sleep(2)
     html = message
     url = f"https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&text={quote_plus(html)}&parse_mode=html"
     r = requests.get(url)
