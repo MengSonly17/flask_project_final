@@ -1,0 +1,42 @@
+.navbar .container a.navbar-brand{
+    transition: all 0.3s ease;
+}
+.navbar .container a.navbar-brand:hover {
+    color:#16610E;
+    transform: scale(1.2);
+}
+.navbar .container #mainNavbar ul.navbar-nav li a {
+    margin:0 10px 0 0;
+    /*padding:7px 12px;*/
+    transition: all 0.3s ease;
+}
+.navbar .container #mainNavbar ul.navbar-nav li a:hover {
+    /*font-weight: normal !important;*/
+    color:#333446 !important;
+    /*background-color: #7F8CAA;*/
+    transform: translateY(-4px);
+    border-bottom: 1.5px solid #333446;
+    /*box-shadow: 3px 3px 10px #333446;*/
+}
+.navbar .container div .btn_cart {
+    background-color: #333446;
+    color:#EAEFEF;
+    transition: all 0.3s ease;
+}
+.navbar .container div .btn_cart i {
+    color:#EAEFEF;
+}
+.navbar .container div .btn_cart span {
+    color:#B8CFCE;
+}
+.navbar .container div .btn_cart:hover {
+    background-color: #819A91 ;
+    transform: translate(-3px,-3px);
+    box-shadow: 3px 3px 10px #333446;
+}
+
+
+
+
+
+

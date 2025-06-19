@@ -3,7 +3,7 @@ from Tools.scripts.make_ctype import method
 from flask import Flask , render_template , request
 import requests
 from tabulate import tabulate
-from datetime import date
+from datetime import datetime
 import time
 from babel.numbers import format_currency
 import getpass
@@ -87,27 +87,25 @@ def messageToTelegram():
         ])
 
     print(data[size-1])
-
+    now = datetime.now()
+    dateTime = now.strftime("%d/%m/%Y %H:%M:%S")
     table = tabulate(cart_list, ["Item", "Qty", "Price"], tablefmt="fancy_outline")
-    user_name = getpass.getuser()
     message = (
-        f"<strong>🛍 Checkout Summary </strong>\n"
-        f"<strong>Date </strong> {'':>42} : {'':<2} {date.today()}\n"
-        f"<strong>Customer Name</strong> {'':>19} : {'':<2} {data[size-1]['fullName']}\n"
-        f"<strong>Number  </strong> {'':>34} : {'':<2} {data[size-1]['number']}\n"
-        f"<strong>Telegram Number  </strong> {'':>14} : {'':<2} {data[size-1]['telegramNumber']}\n"
-        f"<strong>{'Payment Method':<32} : {'':<2} {data[size-1]['payMethod']} </strong>\n"
-        f"<strong>{'Delivery Method':<34} : {'':<2} {data[size-1]['deliveryMethod']} </strong>\n"
-        f"<strong>Email  </strong> {'':>39} : {'':<2} {data[size-1]['email']}\n"
-        f"<strong>Address  </strong> {'':>34} : {'':<2} {data[size-1]['address']}\n"
-        f"<strong>Sold by </strong> {'':>37} : {'':<2} {user_name}\n\n"
+        f"<strong>✅ Checkout Summary </strong>\n\n"
+        f"<strong>📅 Date </strong> {'':>32} : {'':<2} {dateTime}\n"
+        f"<strong>🕵️‍♂️ Customer Name</strong> {'':>9} : {'':<2} {data[size-1]['fullName']}\n"
+        f"<strong>📱 Number  </strong> {'':>24} : {'':<2} {data[size-1]['number']}\n"
+        f"<strong>📬 Email  </strong> {'':>29} : {'':<2} {data[size-1]['email']}\n"
+        f"<strong>📍 Address  </strong> {'':>24} : {'':<2} {data[size-1]['address']}\n"
+        f"<strong>💳 {'Payment Method':<22} : {'':<2} {data[size-1]['payMethod']} </strong>\n"
+        f"<strong>🚚 {'Delivery Method':<24} : {'':<2} {data[size-1]['deliveryMethod']} </strong>\n\n"
         f"<pre>{table}</pre>"
-        f"\n\n<strong>{'🧾Total':<54} : {'':<2} </strong>{format_currency(data[size-1]['totalAmount'], 'USD', locale='en_US')}\n"
-        f"<strong>{'✅Receive':<50} : {'':<2} </strong>{format_currency(data[size - 1]['totalAmount'], 'USD', locale='en_US')}\n"
-        f"<strong>{'💰Change':<50} : {'':<2} </strong>{format_currency(0, 'USD', locale='en_US')}\n"
+        f"\n\n<strong>{'💰 Total':<13} : {'':<2} </strong>{format_currency(data[size-1]['totalAmount'], 'USD', locale='en_US')}\n"
+        f"<strong>{'✅ Receive':<5} : {'':<2} </strong>{format_currency(data[size - 1]['payment'], 'USD', locale='en_US')}\n"
+        f"<strong>{'💵 Change':<5} : {'':<2} </strong>{format_currency(float(data[size - 1]['payment'])-float(data[size-1]['totalAmount']), 'USD', locale='en_US')}\n"
     )
 
-    time.sleep(2)
+    time.sleep(3)
     html = message
     url = f"https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&text={quote_plus(html)}&parse_mode=html"
     r = requests.get(url)
